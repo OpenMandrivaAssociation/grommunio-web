@@ -101,7 +101,5 @@ mkdir -p %{buildroot}/srv/grommunio/web/sqlite-index %{buildroot}/srv/grommunio/
 %dir %{_sysconfdir}/grommunio-web
 %config %{_sysconfdir}/nginx/sites-available/grommunio.conf
 %config %{_sysconfdir}/grommunio-web/config.php
-%dir %attr(2755,grommunio,www) /srv/grommunio
-%dir %attr(2755,grommunio,www) /srv/grommunio/web
 %dir %attr(2755,grommunio,www) /srv/grommunio/web/sqlite-index
 %dir %attr(2755,grommunio,www) /srv/grommunio/web/plugin_files
