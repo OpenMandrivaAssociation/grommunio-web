@@ -1,6 +1,6 @@
 Name:		grommunio-web
-Version:	3.17
-Release:	2
+Version:	3.18
+Release:	1
 Source0:	https://github.com/grommunio/grommunio-web/releases/download/grommunio-web-%{version}/grommunio-web-%{version}.tar.xz
 Summary:	Web mail/calendar interface for the Grommunio groupware server
 URL:		https://github.com/grommunio/grommunio-web
@@ -27,7 +27,7 @@ It is the main web application for access to your productivity workspace,
 including email, calendar, contacts, tasks, notes and more.
 
 %prep
-%autosetup -p1
+%autosetup -p1 -n grommunio-web-grommunio-web-3.18
 find . -type f |xargs sed -i \
 	-e 's,/var/lib/grommunio-web/session,/run/grommunio/web/session,g' \
 	-e 's,/var/lib/grommunio-web/plugin_files,/srv/grommunio/web/plugin_files,g' \
