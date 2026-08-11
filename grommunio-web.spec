@@ -1,6 +1,6 @@
 Name:		grommunio-web
 Version:	3.19
-Release:	2
+Release:	3
 Source0:	https://github.com/grommunio/grommunio-web/releases/download/grommunio-web-%{version}/grommunio-web-%{version}.tar.xz
 Summary:	Web mail/calendar interface for the Grommunio groupware server
 URL:		https://github.com/grommunio/grommunio-web
@@ -43,6 +43,11 @@ sed -e 's,default:,unix:/run/gromox/zcore.sock,g' config.php.dist >config.php
 
 mkdir -p %{buildroot}%{_sysconfdir}/nginx/sites-available
 mkdir -p %{buildroot}%{_sysconfdir}/nginx/grommunio.d
+# nginx 'include *.conf' fails if the directory is empty
+cat >%{buildroot}%{_sysconfdir}/nginx/grommunio.d/00-placeholder.conf <<'EOF'
+# Drop-in directory for grommunio-sync / grommunio-dav location snippets.
+# This file exists so nginx can include the glob when no extras are installed.
+EOF
 cat >%{buildroot}%{_sysconfdir}/nginx/sites-available/grommunio.conf <<'EOF'
 server {
 	listen 80;
@@ -104,6 +109,7 @@ mkdir -p %{buildroot}/srv/grommunio/web/sqlite-index %{buildroot}/srv/grommunio/
 %{_datadir}/grommunio-web
 %dir %{_sysconfdir}/grommunio-web
 %dir %{_sysconfdir}/nginx/grommunio.d
+%config(noreplace) %{_sysconfdir}/nginx/grommunio.d/00-placeholder.conf
 %config %{_sysconfdir}/nginx/sites-available/grommunio.conf
 %config %{_sysconfdir}/grommunio-web/config.php
 %dir %attr(2755,grommunio,www) /srv/grommunio/web/sqlite-index
