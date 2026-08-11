@@ -1,6 +1,6 @@
 Name:		grommunio-web
 Version:	3.19
-Release:	1
+Release:	2
 Source0:	https://github.com/grommunio/grommunio-web/releases/download/grommunio-web-%{version}/grommunio-web-%{version}.tar.xz
 Summary:	Web mail/calendar interface for the Grommunio groupware server
 URL:		https://github.com/grommunio/grommunio-web
@@ -42,12 +42,16 @@ mkdir -p %{buildroot}%{_sysconfdir}/grommunio-web
 sed -e 's,default:,unix:/run/gromox/zcore.sock,g' config.php.dist >config.php
 
 mkdir -p %{buildroot}%{_sysconfdir}/nginx/sites-available
+mkdir -p %{buildroot}%{_sysconfdir}/nginx/grommunio.d
 cat >%{buildroot}%{_sysconfdir}/nginx/sites-available/grommunio.conf <<'EOF'
 server {
 	listen 80;
 	server_name mail.example.com;
 	root /usr/share/grommunio-web;
 	index index.php;
+
+	# Optional drop-ins from grommunio-sync / grommunio-dav
+	include /etc/nginx/grommunio.d/*.conf;
 
 	location / {
 		try_files $uri $uri/ /index.php?$args;
@@ -99,6 +103,7 @@ mkdir -p %{buildroot}/srv/grommunio/web/sqlite-index %{buildroot}/srv/grommunio/
 %files
 %{_datadir}/grommunio-web
 %dir %{_sysconfdir}/grommunio-web
+%dir %{_sysconfdir}/nginx/grommunio.d
 %config %{_sysconfdir}/nginx/sites-available/grommunio.conf
 %config %{_sysconfdir}/grommunio-web/config.php
 %dir %attr(2755,grommunio,www) /srv/grommunio/web/sqlite-index
