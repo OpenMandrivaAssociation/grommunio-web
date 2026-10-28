@@ -12,11 +12,14 @@ License:	AGPL-3.0
 Group:		Servers
 BuildArch:	noarch
 BuildRequires:	nodejs
-BuildRequires:	php
+# Cooker has no php package. php-cli, php-fpm, php-cgi and php-dbg all
+# provide the name "php", and only php-cli ships /usr/bin/php. make deploy
+# lints with `php -l`, and the session cleaner calls php at runtime.
+BuildRequires:	php-cli
 BuildRequires:	gettext
 BuildRequires:	make
 BuildRequires:	python
-Requires:	php
+Requires:	php-cli
 Requires:	php-gromox
 Requires:	php-fpm
 Requires:	php-iconv
