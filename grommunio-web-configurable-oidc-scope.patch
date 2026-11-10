@@ -1,0 +1,18 @@
+Subject: [PATCH] WebAppKeyCloak: use the configured OAuth2 scope
+
+Requires the matching mapi-header-php change (KeyCloak::$scope, read from
+the optional "scope" key in keycloak.json).
+
+diff --git a/server/includes/core/class.webappkeycloak.php b/server/includes/core/class.webappkeycloak.php
+index 8cc0b6f..582e9f2 100644
+--- a/server/includes/core/class.webappkeycloak.php
++++ b/server/includes/core/class.webappkeycloak.php
+@@ -112,7 +112,7 @@ class WebAppKeyCloak extends KeyCloak {
+ 		$this->storeState($state);
+ 
+ 		$params = [
+-			'scope' => 'openid',
++			'scope' => $this->scope,
+ 			'client_id' => $this->client_id,
+ 			'state' => $state,
+ 			'redirect_uri' => $this->redirect_url,

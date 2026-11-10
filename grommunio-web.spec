@@ -1,11 +1,13 @@
 Name:		grommunio-web
 Version:	5.2
-Release:	1
+Release:	2
 # GitHub no longer attaches a prebuilt release tarball. This is the tag archive.
 Source0:	https://github.com/grommunio/grommunio-web/archive/refs/tags/grommunio-web-%{version}.tar.gz#/grommunio-web-%{version}.tar.gz
 # Production npm tree (terser, postcss, cssnano, html-minifier-terser).
 # No native addons; esbuild is not required, the PGP vendor bundle is committed.
 Source1:	grommunio-web-%{version}-npm.tar.zst
+# Submit upstream together with the mapi-header-php half.
+Patch0:		grommunio-web-configurable-oidc-scope.patch
 Summary:	Web mail/calendar interface for the Grommunio groupware server
 URL:		https://github.com/grommunio/grommunio-web
 License:	AGPL-3.0
@@ -29,7 +31,7 @@ Requires:	php-dom
 Requires:	php-gettext
 Requires:	php-ldap
 Requires:	php-gd
-Requires:	grommunio-mapi-header-php >= 2.4
+Requires:	grommunio-mapi-header-php >= 2.4-2
 Requires:	grommunio-admin-api
 Requires:	nginx
 
@@ -168,6 +170,6 @@ EOF
 %dir %{_sysconfdir}/nginx/grommunio.d
 %config(noreplace) %{_sysconfdir}/nginx/grommunio.d/00-placeholder.conf
 %config %{_sysconfdir}/nginx/sites-available/grommunio.conf
-%config %{_sysconfdir}/grommunio-web/config.php
+%config(noreplace) %{_sysconfdir}/grommunio-web/config.php
 %dir %attr(2755,grommunio,www) /srv/grommunio/web/sqlite-index
 %dir %attr(2755,grommunio,www) /srv/grommunio/web/templates
